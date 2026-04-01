@@ -172,6 +172,12 @@
   <ItemGroup>
     <None Include="Shaders\SolidRect.fs" />
     <None Include="Shaders\SolidRect.vs" />
+    <None Include="Shaders\FS.fs">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shaders\FS.vs">
+      <FileType>Document</FileType>
+    </None>
     <None Include="Shaders\Triangle.fs" />
     <None Include="Shaders\Triangle.vs" />
   </ItemGroup>

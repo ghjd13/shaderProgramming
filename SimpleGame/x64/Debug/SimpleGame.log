@@ -1,1 +1,17 @@
-﻿  SimpleGame.vcxproj -> C:\Users\김지호\Desktop\shaderProgramming\x64\Debug\SimpleGame.exe
+﻿  Renderer.cpp
+C:\Users\김지호\Desktop\shaderProgramming\SimpleGame\Renderer.cpp(55,13): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
+  (소스 파일 '/Renderer.cpp'을(를) 컴파일하는 중)
+  
+C:\Users\김지호\Desktop\shaderProgramming\SimpleGame\Renderer.cpp(142,21): warning C4267: '=': 'size_t'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 '/Renderer.cpp'을(를) 컴파일하는 중)
+  
+C:\Users\김지호\Desktop\shaderProgramming\SimpleGame\Renderer.cpp(270,12): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  (소스 파일 '/Renderer.cpp'을(를) 컴파일하는 중)
+  
+C:\Users\김지호\Desktop\shaderProgramming\SimpleGame\Renderer.cpp(307,12): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  (소스 파일 '/Renderer.cpp'을(를) 컴파일하는 중)
+  
+C:\Users\김지호\Desktop\shaderProgramming\SimpleGame\Renderer.cpp(358,12): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  (소스 파일 '/Renderer.cpp'을(를) 컴파일하는 중)
+  
+  SimpleGame.vcxproj -> C:\Users\김지호\Desktop\shaderProgramming\x64\Debug\SimpleGame.exe

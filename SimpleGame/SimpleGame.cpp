@@ -24,7 +24,9 @@ void RenderScene(void)
 
 	// Renderer Test
 	// g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	g_Renderer->DrawTriangle(0, 0, 0, 4, 1, 0, 1, 1);
+	// g_Renderer->DrawTriangle(0, 0, 0, 4, 1, 0, 1, 1);
+	// g_Renderer->DrawParticles(0, 0, 0, 4, 1, 0, 1, 1);
+	g_Renderer->DrawFS(0, 0, 0, 4, 1, 0, 1, 1);
 
 	glutSwapBuffers();
 }

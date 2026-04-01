@@ -20,11 +20,12 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	//Load shaders
 	//m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
 	m_TriangleShader = CompileShaders("./Shaders/Triangle.vs", "./Shaders/Triangle.fs");
+	m_FSShader = CompileShaders("./Shaders/FS.vs", "./Shaders/FS.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
 
-	if (m_SolidRectShader > 0 && m_VBORect > 0)
+	if (m_SolidRectShader > 0 && m_FSShader > 0)
 	{
 		m_Initialized = true;
 	}
@@ -56,6 +57,10 @@ void Renderer::CreateVertexBufferObjects()
 
 	float vx = 1;
 	float vy = 3;
+
+	float rv = 2;
+	float rv1 = 2;
+	float rv2 = 1;
 	//데이터 준비
 	float triangle[]
 		=
@@ -73,27 +78,50 @@ void Renderer::CreateVertexBufferObjects()
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOTriangle);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangle, GL_STATIC_DRAW);
 
+	float rectFS[]
+		=
+	{
+		-1.f, -1.f, 0.f,  1.f, 1.f, 
+		 1.f,  1.f, 0.f,  0.f, 0.f, 
+		-1.f,  1.f, 0.f,  1.f, 0.f, // Triangle 1
+
+		-1.f, -1.f, 0.f,  1.f, 1.f,
+		 1.f, -1.f, 0.f,  0.f, 1.f,
+		 1.f,  1.f, 0.f,  0.f, 0.f  // Triangle 2
+	};
+
+	glGenBuffers(1, &m_VBOFS);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOFS);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(rectFS), rectFS, GL_STATIC_DRAW);
+
+
 	// 3. 신규 파티클 데이터 생성 
-	const int PARTICLE_COUNT = 5000; // 원하는 파티클 개수
-	float* particleData = new float[PARTICLE_COUNT * 6]; // 위치(3) + 질량(1) + 속도(2) = 6
+	const int PARTICLE_COUNT = 1500;
+	float* particleData = new float[PARTICLE_COUNT * 9];
+
+	float radius = 0.5f; // 생성될 원의 반지름 (0.0 ~ 1.0 사이로 조절)
+	float PI = 3.141592f;
 
 	for (int i = 0; i < PARTICLE_COUNT; ++i)
 	{
-		// 위치 (x, y, z): 화면 무작위 위치 (-1.0 ~ 1.0)
-		particleData[i * 6 + 0] = ((float)rand() / RAND_MAX) * 2.0f - 1.0f; // x
-		particleData[i * 6 + 1] = ((float)rand() / RAND_MAX) * 2.0f - 1.0f; // y
-		particleData[i * 6 + 2] = 0.0f; // z
+		float angle = ((float)rand() / RAND_MAX) * 2.0f * PI;
 
-		// 질량 (Mass)
-		particleData[i * 6 + 3] = ((float)rand() / RAND_MAX) * 5.0f + 0.1f;
+		particleData[i * 9 + 0] = 0; // x
+		particleData[i * 9 + 1] = 0; // y
+		particleData[i * 9 + 2] = 0.0f;                // z
+		particleData[i * 9 + 3] = ((float)rand() / RAND_MAX) * 5.0f + 0.1f; // mass
 
-		// 속도 (vx, vy)
-		particleData[i * 6 + 4] = ((float)rand() / RAND_MAX) * 2.0f - 1.0f;
-		particleData[i * 6 + 5] = ((float)rand() / RAND_MAX) * 2.0f - 1.0f;
+		float speed = ((float)rand() / RAND_MAX) * 2.0f + 1.0f;
+		particleData[i * 9 + 4] = cos(angle) * speed; // vx
+		particleData[i * 9 + 5] = sin(angle) * speed; // vy
+
+		particleData[i * 9 + 6] = ((float)rand() / RAND_MAX); // rv
+		particleData[i * 9 + 7] = ((float)rand() / RAND_MAX); // rv1
+		particleData[i * 9 + 8] = ((float)rand() / RAND_MAX); // rv2
 	}
 	glGenBuffers(1, &m_VBOparticle);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOparticle);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * PARTICLE_COUNT * 6, particleData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * PARTICLE_COUNT * 8, particleData, GL_STATIC_DRAW);
 
 	delete[] particleData; // 동적 할당 해제
 	//데이터 준비 끝
@@ -288,24 +316,69 @@ void Renderer::DrawParticles(
 	int attribMass = glGetAttribLocation(m_TriangleShader, "a_Mass");
 	int attribVel = glGetAttribLocation(m_TriangleShader, "a_Vel");
 
+	int attribRV = glGetAttribLocation(m_TriangleShader, "a_RV");
+	int attribRV1 = glGetAttribLocation(m_TriangleShader, "a_RV1");
+	int attribRV2 = glGetAttribLocation(m_TriangleShader, "a_RV2");
+
 	glEnableVertexAttribArray(attribPosition);
 	glEnableVertexAttribArray(attribMass);
 	glEnableVertexAttribArray(attribVel);
+
+	glEnableVertexAttribArray(attribRV);
+	glEnableVertexAttribArray(attribRV1);
+	glEnableVertexAttribArray(attribRV2);
 
 	// 위에서 만든 파티클 VBO 바인딩
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOparticle);
 
 	// 구조는 기존과 완벽하게 동일합니다. (Stride: 6, Offset: 0, 3, 4)
-	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
-	glVertexAttribPointer(attribMass, 1, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(sizeof(float) * 3));
-	glVertexAttribPointer(attribVel, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(sizeof(float) * 4));
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 9, 0);
+	glVertexAttribPointer(attribMass, 1, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float) * 3));
+	glVertexAttribPointer(attribVel, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float) * 4));
+	glVertexAttribPointer(attribRV, 1, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float) * 6));
+	glVertexAttribPointer(attribRV1, 1, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float) * 7));
+	glVertexAttribPointer(attribRV2, 1, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float) * 8));
 
+	glEnable(GL_PROGRAM_POINT_SIZE);
 	// 점(Point) 형태로 5000개의 파티클을 한 번에 드로우 합니다.
 	glDrawArrays(GL_POINTS, 0, 5000);
 
 	glDisableVertexAttribArray(attribPosition);
 	glDisableVertexAttribArray(attribMass);
 	glDisableVertexAttribArray(attribVel);
+	glDisableVertexAttribArray(attribRV);
+	glDisableVertexAttribArray(attribRV1);
+	glDisableVertexAttribArray(attribRV2);
+}
+
+void Renderer::DrawFS(
+	float x, float y, float z, float size,
+	float r, float g, float b, float a)
+{
+	g_time += 0.0001; // 셰이더 내부의 움직임을 위한 시간 갱신
+
+	// 파티클도 기존 m_TriangleShader를 재사용합니다.
+	glUseProgram(m_FSShader);
+	int uTime = glGetUniformLocation(m_FSShader, "u_Time");
+	glUniform1f(uTime, g_time);
+
+	int attribPosition = glGetAttribLocation(m_FSShader, "a_Pos");
+	int attribTPos = glGetAttribLocation(m_FSShader, "a_TPos");
+
+	glEnableVertexAttribArray(attribPosition);
+	glEnableVertexAttribArray(attribTPos);
+
+	// 위에서 만든 파티클 VBO 바인딩
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOFS);
+
+	// 구조는 기존과 완벽하게 동일합니다. (Stride: 6, Offset: 0, 3, 4)
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(attribTPos, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)(sizeof(float) * 3));
+	
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(attribPosition);
+	glDisableVertexAttribArray(attribTPos);
 }
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)

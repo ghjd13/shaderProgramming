@@ -17,6 +17,7 @@ public:
 	void DrawSolidRect(float x, float y, float z, float size, float r, float g, float b, float a);
 	void DrawTriangle(float x, float y, float z, float size, float r, float g, float b, float a);
 	void DrawParticles(float x, float y, float z, float size, float r, float g, float b, float a);
+	void DrawFS(float x, float y, float z, float size, float r, float g, float b, float a);
 
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
@@ -38,5 +39,9 @@ private:
 	GLuint m_TriangleShader = 0;
 
 	GLuint m_VBOparticle = 0;
+
+	//Fragment Shader
+	GLuint m_VBOFS = 0;
+	GLuint m_FSShader = 0;
 };
 
