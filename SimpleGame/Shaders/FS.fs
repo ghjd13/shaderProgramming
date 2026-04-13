@@ -5,7 +5,10 @@ layout(location=0) out vec4 FragColor;
 uniform float u_Time;
 
 in vec2 v_TPos;
+
 float C_PI = 3.141592;
+
+uniform vec4 u_DropInfo[1000]; //vec4(x, y, sT, lT)
 
 void simple(){
 	if(v_TPos.x + v_TPos.y > 1){
@@ -59,17 +62,44 @@ void CircleSin(){
 	float d = distance(center,currPos);
 	float speed = 10;
 
-	float value = abs(sin(d * 2 * C_PI * 4
+	float value = abs(sin(d * 2 * C_PI * 10
 					- u_Time * speed));
 
+	FragColor = vec4(pow(value, 256));
+}
 
-	float fade = 1.5 - (d * 2.0);
-	fade = max(fade, 0.0);
+void RainDrop(){
+	float accum = 0;
+	// RainDrop
+	for(int i = 0; i < 1000; i++){
+		float lTime = u_DropInfo[i].w;
+		float sTime = u_DropInfo[i].z;
+		float newTime = u_Time - sTime;
 
-	FragColor = vec4(pow(value, 256) * fade);
+		if(newTime > 0){
+			newTime = fract(newTime/lTime);
+
+			float oneMinus = 1 - newTime;
+			float t = newTime * lTime;
+
+			vec2 center = u_DropInfo[i].xy;
+			vec2 currPos = v_TPos.xy;
+
+			float range = t/0.5;
+			float d = distance(center,currPos);
+
+			float fade = 10 * clamp(range - d, 0, 1);
+
+			float value = abs(sin(d * 2 * C_PI * 50 -  t * 500));
+
+			accum += value * fade * oneMinus;
+		} else{
+		}
+	}
+	FragColor = vec4(accum);
 }
 
 void main()
 {
-	CircleSin();
+	RainDrop();
 }

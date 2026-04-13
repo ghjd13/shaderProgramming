@@ -43,5 +43,9 @@ private:
 	//Fragment Shader
 	GLuint m_VBOFS = 0;
 	GLuint m_FSShader = 0;
+
+	//RainDrop
+	float m_DropPoints[1000 * 4];
+
 };
 

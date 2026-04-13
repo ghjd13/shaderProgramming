@@ -22,6 +22,20 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_TriangleShader = CompileShaders("./Shaders/Triangle.vs", "./Shaders/Triangle.fs");
 	m_FSShader = CompileShaders("./Shaders/FS.vs", "./Shaders/FS.fs");
 	
+	//Gen Drop Info
+	int index = 0;
+	for (int i = 0; i < 1000; i++) {
+		float x = (float)rand() / (float)RAND_MAX;
+		float y = (float)rand() / (float)RAND_MAX;
+		float sTime = 3 * (float)rand() / (float)RAND_MAX;
+		float lTime = (float)rand() / (float)RAND_MAX;
+
+		m_DropPoints[index] = x; index++;
+		m_DropPoints[index] = y; index++;
+		m_DropPoints[index] = sTime; index++;
+		m_DropPoints[index] = lTime; index++;
+	}
+
 	//Create VBOs
 	CreateVertexBufferObjects();
 
@@ -29,6 +43,8 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	{
 		m_Initialized = true;
 	}
+
+	
 }
 
 bool Renderer::IsInitialized()
@@ -361,6 +377,8 @@ void Renderer::DrawFS(
 	glUseProgram(m_FSShader);
 	int uTime = glGetUniformLocation(m_FSShader, "u_Time");
 	glUniform1f(uTime, g_time);
+	int uPoints = glGetUniformLocation(m_FSShader, "u_DropInfo");
+	glUniform4fv(uPoints, 1000, m_DropPoints);
 
 	int attribPosition = glGetAttribLocation(m_FSShader, "a_Pos");
 	int attribTPos = glGetAttribLocation(m_FSShader, "a_TPos");
