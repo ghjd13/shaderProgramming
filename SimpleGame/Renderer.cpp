@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "LoadPng.h"
+#include <assert.h>
 
 Renderer::Renderer(int windowSizeX, int windowSizeY)
 {
@@ -35,7 +37,14 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 		m_DropPoints[index] = sTime; index++;
 		m_DropPoints[index] = lTime; index++;
 	}
-
+	//Load texture
+	m_RgbTexture = CreatePngTexture("./Textures/rgb.png", GL_NEAREST);
+	m_NumsTexture = CreatePngTexture("./Textures/numbers.png", GL_NEAREST);
+	for (int i = 0; i < 10; i++)
+	{
+		std::string path = "./textures/" + std::to_string(i) + ".png";
+		m_NumTexture[i] = CreatePngTexture((char*)path.c_str(), GL_NEAREST);
+	}
 	//Create VBOs
 	CreateVertexBufferObjects();
 
@@ -50,6 +59,49 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 bool Renderer::IsInitialized()
 {
 	return m_Initialized;
+}
+
+GLuint Renderer::CreatePngTexture(char* filePath, GLuint samplingMethod)
+
+{
+
+	//Load Png
+
+	std::vector<unsigned char> image;
+
+	unsigned width, height;
+
+	unsigned error = lodepng::decode(image, width, height, filePath);
+
+	if (error != 0)
+
+	{
+
+		std::cout << "PNG image loading failed:" << filePath << std::endl;
+
+		assert(0);
+
+	}
+	GLuint temp;
+
+	glGenTextures(1, &temp);
+
+	glBindTexture(GL_TEXTURE_2D, temp);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+
+		GL_UNSIGNED_BYTE, &image[0]);
+
+
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, samplingMethod);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, samplingMethod);
+
+
+
+	return temp;
+
 }
 
 void Renderer::CreateVertexBufferObjects()
@@ -377,6 +429,13 @@ void Renderer::DrawFS(
 	glUseProgram(m_FSShader);
 	int uTime = glGetUniformLocation(m_FSShader, "u_Time");
 	glUniform1f(uTime, g_time);
+	
+	int u_RGBTexture = glGetUniformLocation(m_FSShader, "u_RGBTex");
+	glUniform1i(u_RGBTexture, 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_RgbTexture);
+	
 	int uPoints = glGetUniformLocation(m_FSShader, "u_DropInfo");
 	glUniform4fv(uPoints, 1000, m_DropPoints);
 

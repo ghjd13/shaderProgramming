@@ -3,8 +3,10 @@
 layout(location=0) out vec4 FragColor;
 
 uniform float u_Time;
+uniform sampler2D u_RGBTex;
 
 in vec2 v_TPos;
+in vec2 v_Tex;
 
 float C_PI = 3.141592;
 
@@ -99,7 +101,29 @@ void RainDrop(){
 	FragColor = vec4(accum);
 }
 
+void TextureSampling()
+{
+	vec4 c0;
+	vec4 c1;
+	vec4 c2;
+	vec4 c3;
+	vec4 c4;
+
+	float offsetX = 0.01;
+
+	c0 = texture(u_RGBTex, vec2(v_Tex.x - offsetX * 2.0, v_Tex.y));
+    c1 = texture(u_RGBTex, vec2(v_Tex.x - offsetX * 1.0, v_Tex.y));
+    c2 = texture(u_RGBTex, vec2(v_Tex.x - offsetX * 0.0, v_Tex.y));
+    c3 = texture(u_RGBTex, vec2(v_Tex.x - offsetX * 1.0, v_Tex.y));
+    c4 = texture(u_RGBTex, vec2(v_Tex.x - offsetX * 3.0, v_Tex.y));
+
+	vec4 sum = c0 + c1 + c2 + c3 + c4;
+    sum = sum / 5.0;
+
+	FragColor = sum;
+}
+
 void main()
 {
-	RainDrop();
+	TextureSampling();
 }
