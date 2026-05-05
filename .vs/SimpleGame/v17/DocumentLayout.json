@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.vs||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Shaders\\FS.vs||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
       "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Shaders\\FS.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.vs||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|solutionrelative:SimpleGame\\Shaders\\FS.vs||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{25179D6C-FA85-4619-8EDB-AC241382F6CA}|SimpleGame\\SimpleGame.vcxproj|C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Renderer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -54,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,18 +70,17 @@
               "RelativeToolTip": "SimpleGame\\LoadPng.h",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-27T04:32:46.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T04:32:46.325Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "FS.fs",
               "DocumentMoniker": "C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.fs",
               "RelativeDocumentMoniker": "SimpleGame\\Shaders\\FS.fs",
               "ToolTip": "C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.fs",
               "RelativeToolTip": "SimpleGame\\Shaders\\FS.fs",
-              "ViewState": "AgIAAGcAAAAAAAAAAADgv2sAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAAK0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-03-30T05:22:19.123Z",
               "EditorCaption": ""
@@ -96,8 +95,7 @@
               "RelativeToolTip": "SimpleGame\\Renderer.cpp",
               "ViewState": "AgIAAB0AAAAAAAAAAAAMwCgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-09T05:51:21.484Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T05:51:21.484Z"
             },
             {
               "$type": "Document",
@@ -121,8 +119,7 @@
               "RelativeToolTip": "SimpleGame\\Renderer.h",
               "ViewState": "AgIAACcAAAAAAAAAAAAnwDMAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-03-11T01:48:06.27Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-11T01:48:06.27Z"
             },
             {
               "$type": "Document",
@@ -138,13 +135,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "FS.vs",
               "DocumentMoniker": "C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.vs",
               "RelativeDocumentMoniker": "SimpleGame\\Shaders\\FS.vs",
               "ToolTip": "C:\\Users\\\uAE40\uC9C0\uD638\\Desktop\\shaderProgramming\\SimpleGame\\Shaders\\FS.vs",
               "RelativeToolTip": "SimpleGame\\Shaders\\FS.vs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-03-30T05:22:29.738Z",
               "EditorCaption": ""
