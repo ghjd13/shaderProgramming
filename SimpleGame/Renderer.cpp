@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "LoadPng.h"
 #include <assert.h>
+#include"Windows.h"
 
 Renderer::Renderer(int windowSizeX, int windowSizeY)
 {
@@ -419,6 +420,8 @@ void Renderer::DrawParticles(
 	glDisableVertexAttribArray(attribRV2);
 }
 
+
+int g_Curr_Num = 0;
 void Renderer::DrawFS(
 	float x, float y, float z, float size,
 	float r, float g, float b, float a)
@@ -433,8 +436,44 @@ void Renderer::DrawFS(
 	int u_RGBTexture = glGetUniformLocation(m_FSShader, "u_RGBTex");
 	glUniform1i(u_RGBTexture, 0);
 
+	int u_CurrNumTexture = glGetUniformLocation(m_FSShader, "u_CurrNumTex");
+	glUniform1i(u_CurrNumTexture, g_Curr_Num + 2);
+
+	int u_NumsTexture = glGetUniformLocation(m_FSShader, "u_NumsTex");
+	glUniform1i(u_NumsTexture, 1);
+	g_Curr_Num++;
+	if (g_Curr_Num > 9)g_Curr_Num = 0;
+	Sleep(500);
+
+	int u_InputNum = glGetUniformLocation(m_FSShader, "u_InputNum");
+	glUniform1i(u_InputNum, 5);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_RgbTexture);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_NumsTexture);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[0]);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[1]);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[2]);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[3]);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[4]);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[5]);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[6]);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[7]);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[8]);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, m_NumTexture[9]);
 	
 	int uPoints = glGetUniformLocation(m_FSShader, "u_DropInfo");
 	glUniform4fv(uPoints, 1000, m_DropPoints);
